@@ -5,3 +5,7 @@
 .delete-button:hover {
   cursor: pointer;
 }
+
+.delete-button:active {
+  margin-top: 3px;
+}
