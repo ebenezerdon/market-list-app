@@ -9,3 +9,11 @@
 .delete-button:active {
   margin-top: 3px;
 }
+
+.add-item-form {
+  margin-bottom: 5em;
+}
+
+.add-item-form .btn:active {
+  margin-top: 7px;
+}
