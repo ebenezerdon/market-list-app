@@ -23,6 +23,11 @@ const App = () => {
   return (
     <div className="container">
       <h3 className="green-text center-align">Market List App</h3>
+      <form className="add-item-form">
+        <input type="text" placeholder="Name of item" />
+        <input type="number" placeholder="Price in USD" />
+        <a class="waves-effect waves-light btn right">Add item</a>
+      </form>
       <div className="card white darken-1">
         <div className="card-content">
           <form action="#">
