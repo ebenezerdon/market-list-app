@@ -4,12 +4,12 @@ import './App.css'
 
 const db = new Dexie('MarketList');
 db.version(1).stores(
-  { items: "++id,name,price" }
+  { items: "++id,name,price,itemHasBeenPurchased" }
 )
 
 const App = () => {
-  const items = useLiveQuery(() => db.items.toArray(), []);
-  if (!items) return null
+  const allItems = useLiveQuery(() => db.items.toArray(), []);
+  if (!allItems) return null
 
   const addItemToDb = async event => {
     event.preventDefault()
@@ -22,16 +22,29 @@ const App = () => {
     await db.items.delete(id)
   }
 
-  const itemData = items.map(item => (
-    <div className="row" key={item.id}>
+  const markAsPurchased = async (id, event) => {
+    if (event.target.checked) {
+      await db.items.update(id, {itemHasBeenPurchased: true})
+    }
+    else {
+      await db.items.update(id, {itemHasBeenPurchased: false})
+    }
+  }
+
+  const itemData = allItems.map(({ id, name, price, itemHasBeenPurchased }) => (
+    <div className="row" key={id}>
       <p className="col s5">
         <label>
-          <input type="checkbox" />
-          <span className="black-text">{item.name}</span>
+          <input
+            type="checkbox"
+            checked={itemHasBeenPurchased}
+            onChange={(event) => markAsPurchased(id, event)}
+          />
+          <span className="black-text">{name}</span>
         </label>
       </p>
-      <p className="col s5">${item.price}</p>
-      <i onClick={() => removeItemFromDb(item.id)} className="col s2 material-icons delete-button">
+      <p className="col s5">${price}</p>
+      <i onClick={() => removeItemFromDb(id)} className="col s2 material-icons delete-button">
         delete
       </i>
     </div>
@@ -45,7 +58,7 @@ const App = () => {
         <input type="number" className="item-price" placeholder="Price in USD" />
         <button type="submit" className="waves-effect waves-light btn right">Add item</button>
       </form>
-      {items.length > 0 &&
+      {allItems.length > 0 &&
         <div className="card white darken-1">
           <div className="card-content">
             <form action="#">
