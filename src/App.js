@@ -54,8 +54,8 @@ const App = () => {
     <div className="container">
       <h3 className="green-text center-align">Market List App</h3>
       <form className="add-item-form" onSubmit={event => addItemToDb(event)} >
-        <input type="text" className="item-name" placeholder="Name of item" />
-        <input type="number" className="item-price" placeholder="Price in USD" />
+        <input type="text" className="item-name" placeholder="Name of item" required/>
+        <input type="number" className="item-price" placeholder="Price in USD" required/>
         <button type="submit" className="waves-effect waves-light btn right">Add item</button>
       </form>
       {allItems.length > 0 &&
