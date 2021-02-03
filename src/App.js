@@ -1,5 +1,5 @@
 import Dexie from 'dexie'
-import { useState } from 'react'
+import { useLiveQuery } from "dexie-react-hooks";
 import './App.css'
 
 const db = new Dexie('MarketList');
@@ -8,24 +8,21 @@ db.version(1).stores(
 )
 
 const App = () => {
-  const [allItems, setAllItems] = useState([])
+  const items = useLiveQuery(() => db.items.toArray(), []);
+  if (!items) return null
 
   const addItemToDb = async event => {
     event.preventDefault()
     const name = document.querySelector('.item-name').value
     const price = document.querySelector('.item-price').value
     db.items.add({ name, price })
-    const newItemList = await db.items.toArray()
-    setAllItems(newItemList)
   }
 
   const removeItemFromDb = async id => {
-    db.items.delete(id)
-    const newItemList = await db.items.toArray()
-    setAllItems(newItemList)
+    await db.items.delete(id)
   }
 
-  const itemData = allItems.map(item => (
+  const itemData = items.map(item => (
     <div className="row" key={item.id}>
       <p className="col s5">
         <label>
@@ -48,7 +45,7 @@ const App = () => {
         <input type="number" className="item-price" placeholder="Price in USD" />
         <button type="submit" className="waves-effect waves-light btn right">Add item</button>
       </form>
-      {allItems.length > 0 &&
+      {items.length > 0 &&
         <div className="card white darken-1">
           <div className="card-content">
             <form action="#">
