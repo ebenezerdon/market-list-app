@@ -38,7 +38,7 @@ const App = () => {
           <input
             type="checkbox"
             checked={itemHasBeenPurchased}
-            onChange={(event) => markAsPurchased(id, event)}
+            onChange={event => markAsPurchased(id, event)}
           />
           <span className="black-text">{name}</span>
         </label>
