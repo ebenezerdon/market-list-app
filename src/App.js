@@ -15,7 +15,11 @@ const App = () => {
     event.preventDefault()
     const name = document.querySelector('.item-name').value
     const price = document.querySelector('.item-price').value
-    await db.items.add({ name, price, itemHasBeenPurchased: false })
+    await db.items.add({
+      name,
+      price: Number(price),
+      itemHasBeenPurchased: false
+    })
   }
 
   const removeItemFromDb = async id => {
@@ -55,7 +59,7 @@ const App = () => {
       <h3 className="green-text center-align">Market List App</h3>
       <form className="add-item-form" onSubmit={event => addItemToDb(event)} >
         <input type="text" className="item-name" placeholder="Name of item" required/>
-        <input type="number" className="item-price" placeholder="Price in USD" required/>
+        <input type="number" step=".01" className="item-price" placeholder="Price in USD" required/>
         <button type="submit" className="waves-effect waves-light btn right">Add item</button>
       </form>
       {allItems.length > 0 &&
