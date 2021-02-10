@@ -15,7 +15,7 @@ const App = () => {
     event.preventDefault()
     const name = document.querySelector('.item-name').value
     const price = document.querySelector('.item-price').value
-    db.items.add({ name, price, itemHasBeenPurchased: false })
+    await db.items.add({ name, price, itemHasBeenPurchased: false })
   }
 
   const removeItemFromDb = async id => {
@@ -68,7 +68,7 @@ const App = () => {
         </div>
       }
     </div>
-  );
+  )
 }
 
 export default App;
